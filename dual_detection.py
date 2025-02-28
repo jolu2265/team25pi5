@@ -8,6 +8,7 @@ import cv2
 import numpy as np
 
 from multiprocessing import Manager, Process
+from multiprocessing import shared_memory
 from stereo_calc import compute_stereo_and_pose
 import time
 
@@ -98,6 +99,12 @@ right_data = manager.list()
 right_coords = manager.list()
 stereo_proc = Process(target=compute_stereo_and_pose, args=(left_data, right_data, left_coords, right_coords))
 stereo_proc.start()
+
+## This is the shared mem shit
+# existing_shm = shared_memory.SharedMemory(name="my_shared_data")
+# shared_array = np.ndarray((100,), dtype=np.int32, buffer=existing_shm.buf)
+# print(shared_array)
+# existing_shm.close()
 
 # added data store for sending data
 def detect_aruco_and_stream(picam, output, data_store, coords_store):
